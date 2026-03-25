@@ -26,13 +26,13 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore
-        run: dotnet restore UserBahavior.slnx
+        run: dotnet restore UserBehavior.slnx
 
       - name: Build
-        run: dotnet build UserBahavior.slnx --configuration Release --no-restore
+        run: dotnet build UserBehavior.slnx --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test UserBahavior.slnx --configuration Release --no-restore --no-build
+        run: dotnet test UserBehavior.slnx --configuration Release --no-restore --no-build
 
       - name: Publish
-        run: dotnet publish UserBahavior.slnx --configuration Release --no-restore --no-build
+        run: dotnet publish UserBehavior.slnx --configuration Release --no-restore --no-build
