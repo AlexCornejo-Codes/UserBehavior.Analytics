@@ -71,4 +71,20 @@ public sealed class CustomersController(ApplicationDbContext dbContext) : Contro
 
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteCustomer(string id)
+    {
+        Customer? customer = await dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+        
+        if (customer is null)
+        {
+            return NotFound();
+        }
+
+        dbContext.Customers.Remove(customer);
+        await dbContext.SaveChangesAsync();
+
+        return NoContent();
+    }
 }
