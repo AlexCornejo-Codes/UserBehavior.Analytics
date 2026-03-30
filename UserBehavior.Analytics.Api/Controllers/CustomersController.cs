@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserBehavior.Analytics.Api.Database;
 using UserBehavior.Analytics.Api.DTOs.Customers;
+using UserBehavior.Analytics.Api.Entities;
 
 namespace UserBehavior.Analytics.Api.Controllers;
 
@@ -14,15 +15,7 @@ public sealed class CustomersController(ApplicationDbContext dbContext) : Contro
     {
         List<CustomerDto> customers = await dbContext
             .Customers
-            .Select(c => new CustomerDto
-            {
-                Id = c.Id,
-                ExternalCustomerId = c.ExternalCustomerId,
-                Age = c.Age,
-                Gender = c.Gender,
-                Country = c.Country,
-                CreatedAtUtc = c.CreatedAtUtc
-            })
+            .Select(CustomerQueries.ProjectToDto())
             .ToListAsync();
 
         var customersCollectionDto = new CustomersCollectionDto
@@ -39,15 +32,7 @@ public sealed class CustomersController(ApplicationDbContext dbContext) : Contro
         CustomerDto? customer = await dbContext
             .Customers
             .Where(c => c.Id == id)
-            .Select(c => new CustomerDto
-            {
-                Id = c.Id,
-                ExternalCustomerId = c.ExternalCustomerId,
-                Age = c.Age,
-                Gender = c.Gender,
-                Country = c.Country,
-                CreatedAtUtc = c.CreatedAtUtc
-            })
+            .Select(CustomerQueries.ProjectToDto())
             .FirstOrDefaultAsync();
 
         if (customer is null)
@@ -56,5 +41,18 @@ public sealed class CustomersController(ApplicationDbContext dbContext) : Contro
         }
 
         return Ok(customer);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<CustomerDto>> CreateCustomer(CreateCustomerDto createCustomerDto)
+    {
+        Customer customer = createCustomerDto.ToEntity();
+        
+        dbContext.Customers.Add(customer);
+        await dbContext.SaveChangesAsync();
+
+        CustomerDto customerDto = customer.ToDto();
+        
+        return CreatedAtAction(nameof(GetCustomer), new { id = customerDto.Id }, customerDto);
     }
 }
