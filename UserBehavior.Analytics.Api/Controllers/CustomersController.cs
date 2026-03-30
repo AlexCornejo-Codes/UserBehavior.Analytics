@@ -22,7 +22,7 @@ public sealed class CustomersController(ApplicationDbContext dbContext) : Contro
         {
             Data = customers
         };
-        
+
         return Ok(customersCollectionDto);
     }
 
@@ -47,12 +47,28 @@ public sealed class CustomersController(ApplicationDbContext dbContext) : Contro
     public async Task<ActionResult<CustomerDto>> CreateCustomer(CreateCustomerDto createCustomerDto)
     {
         Customer customer = createCustomerDto.ToEntity();
-        
+
         dbContext.Customers.Add(customer);
         await dbContext.SaveChangesAsync();
 
         CustomerDto customerDto = customer.ToDto();
-        
+
         return CreatedAtAction(nameof(GetCustomer), new { id = customerDto.Id }, customerDto);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateCustomer(string id, UpdateCustomerDto updateCustomerDto)
+    {
+        Customer? customer = await dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+        
+        if (customer is null)
+        {
+            return NotFound();
+        }
+
+        customer.UpdateFromDto(updateCustomerDto);
+        await dbContext.SaveChangesAsync();
+
+        return NoContent();
     }
 }

@@ -32,4 +32,12 @@ internal static class CustomerMappings
         
         return customer;
     }
+    
+    public static void UpdateFromDto(this Customer customer, UpdateCustomerDto dto)
+    {
+        customer.ExternalCustomerId = dto.ExternalCustomerId;
+        customer.Age = dto.Age;
+        customer.Gender = dto.Gender;
+        customer.Country = dto.Country;
+    }
 }
