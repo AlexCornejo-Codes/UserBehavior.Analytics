@@ -16,4 +16,19 @@ internal static class SubscriptionMappings
             AccountAgeMonths = subscription.AccountAgeMonths
         };
     }
+
+    public static Subscription ToEntity(this CreateSubscriptionDto dto)
+    {
+        Subscription subscription = new()
+        {
+            Id = $"s_{Guid.CreateVersion7()}",
+            CustomerId = dto.CustomerId,
+            SubscriptionType = dto.SubscriptionType,
+            MonthlyFee = dto.MonthlyFee,
+            PaymentMethod = dto.PaymentMethod,
+            AccountAgeMonths = dto.AccountAgeMonths
+        };
+        
+        return subscription;
+    }
 }

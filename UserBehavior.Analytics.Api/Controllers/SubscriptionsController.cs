@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserBehavior.Analytics.Api.Database;
 using UserBehavior.Analytics.Api.DTOs.Subscriptions;
+using UserBehavior.Analytics.Api.Entities;
 
 namespace UserBehavior.Analytics.Api.Controllers;
 
@@ -40,5 +41,18 @@ public sealed class SubscriptionsController(ApplicationDbContext dbContext) : Co
         }
         
         return Ok(subscription);
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult<SubscriptionDto>> CreateSubscription(CreateSubscriptionDto createSubscriptionDto)
+    {
+        Subscription subscription = createSubscriptionDto.ToEntity();
+        
+        dbContext.Add(subscription);
+        await dbContext.SaveChangesAsync();
+        
+        SubscriptionDto subscriptionDto = subscription.ToDto();
+        
+        return CreatedAtAction(nameof(GetSubscription), new { id = subscriptionDto.Id }, subscriptionDto);
     }
 }
