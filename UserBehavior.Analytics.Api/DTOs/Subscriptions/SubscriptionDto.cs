@@ -1,5 +1,10 @@
 namespace UserBehavior.Analytics.Api.DTOs.Subscriptions;
 
+public sealed record SubscriptionsCollectionDto
+{
+    public List<SubscriptionDto> Data { get; init; }
+}
+
 public sealed record SubscriptionDto
 {
     public string Id { get; init; }
