@@ -6,6 +6,8 @@ namespace UserBehavior.Analytics.Api.Database;
 public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
     public DbSet<Customer> Customers { get; set; }
+    public DbSet<Subscription> Subscriptions { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema(Schemas.Application);
