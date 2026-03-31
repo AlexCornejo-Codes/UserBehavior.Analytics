@@ -10,7 +10,6 @@ internal static class CustomerQueries
         return c => new CustomerDto
         {
             Id = c.Id,
-            ExternalCustomerId = c.ExternalCustomerId,
             Age = c.Age,
             Gender = c.Gender,
             Country = c.Country,

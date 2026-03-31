@@ -10,7 +10,6 @@ internal static class CustomerMappings
         return new CustomerDto
         {
             Id = customer.Id,
-            ExternalCustomerId = customer.ExternalCustomerId,
             Age = customer.Age,
             Gender = customer.Gender,
             Country = customer.Country,
@@ -23,7 +22,6 @@ internal static class CustomerMappings
         Customer customer = new()
         {
             Id = $"c_{Guid.CreateVersion7()}",
-            ExternalCustomerId = dto.ExternalCustomerId,
             Age = dto.Age,
             Gender = dto.Gender,
             Country = dto.Country,
@@ -35,7 +33,6 @@ internal static class CustomerMappings
     
     public static void UpdateFromDto(this Customer customer, UpdateCustomerDto dto)
     {
-        customer.ExternalCustomerId = dto.ExternalCustomerId;
         customer.Age = dto.Age;
         customer.Gender = dto.Gender;
         customer.Country = dto.Country;
