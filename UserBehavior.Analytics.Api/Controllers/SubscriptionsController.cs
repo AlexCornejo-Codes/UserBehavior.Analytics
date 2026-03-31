@@ -55,4 +55,20 @@ public sealed class SubscriptionsController(ApplicationDbContext dbContext) : Co
         
         return CreatedAtAction(nameof(GetSubscription), new { id = subscriptionDto.Id }, subscriptionDto);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateSubscription(string id, UpdateSubscriptionDto updateSubscriptionDto)
+    {
+        Subscription? subscription = await dbContext.Subscriptions.FirstOrDefaultAsync(s => s.Id == id);
+        
+        if (subscription is null)
+        {
+            return NotFound();
+        }
+        
+        subscription.UpdateFromDto(updateSubscriptionDto);
+        await dbContext.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }

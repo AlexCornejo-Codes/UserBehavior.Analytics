@@ -31,4 +31,12 @@ internal static class SubscriptionMappings
         
         return subscription;
     }
+    
+    public static void UpdateFromDto(this Subscription subscription, UpdateSubscriptionDto dto)
+    {
+        subscription.SubscriptionType = dto.SubscriptionType;
+        subscription.MonthlyFee = dto.MonthlyFee;
+        subscription.PaymentMethod = dto.PaymentMethod;
+        subscription.AccountAgeMonths = dto.AccountAgeMonths;
+    }
 }
