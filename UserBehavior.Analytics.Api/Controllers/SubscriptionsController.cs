@@ -71,4 +71,20 @@ public sealed class SubscriptionsController(ApplicationDbContext dbContext) : Co
         
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteSubscription(string id)
+    {
+        Subscription? subscription = await dbContext.Subscriptions.FirstOrDefaultAsync(s => s.Id == id);
+        
+        if (subscription is null)
+        {
+            return NotFound();
+        }
+        
+        dbContext.Subscriptions.Remove(subscription);
+        await dbContext.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }
