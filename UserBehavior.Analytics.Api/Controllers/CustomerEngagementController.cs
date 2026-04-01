@@ -55,4 +55,22 @@ public sealed class CustomerEngagementController(ApplicationDbContext dbContext)
         
         return CreatedAtAction(nameof(GetCustomerEngagement), new { id = customerEngagementDto.Id }, customerEngagementDto);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateCustomerEngagement(string id, UpdateCustomerEngagement updateCustomerEngagementDto)
+    {
+        CustomerEngagement? customerEngagement = await dbContext
+            .CustomerEngagement
+            .FirstOrDefaultAsync(ce => ce.Id == id);
+        
+        if (customerEngagement is null)
+        {
+            return NotFound();
+        }
+        
+        customerEngagement.UpdateFromDto(updateCustomerEngagementDto);
+        await dbContext.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }

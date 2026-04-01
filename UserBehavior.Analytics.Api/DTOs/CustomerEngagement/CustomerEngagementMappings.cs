@@ -29,4 +29,13 @@ internal static class CustomerEngagementMappings
             FavoriteGenre = dto.FavoriteGenre
         };
     }
+    
+    public static void UpdateFromDto(this Entities.CustomerEngagement customerEngagement, UpdateCustomerEngagement dto)
+    {
+        customerEngagement.AvgWatchTimeMinutes = dto.AvgWatchTimeMinutes;
+        customerEngagement.WatchSessionsPerWeek = dto.WatchSessionsPerWeek;
+        customerEngagement.CompletionRate = dto.CompletionRate;
+        customerEngagement.BingeWatchSessions = dto.BingeWatchSessions;
+        customerEngagement.FavoriteGenre = dto.FavoriteGenre;
+    }
 }
