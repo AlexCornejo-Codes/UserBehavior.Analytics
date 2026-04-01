@@ -10,5 +10,7 @@ public sealed class CustomerEngagementConfiguration : IEntityTypeConfiguration<C
     {
         builder.HasKey(ce => ce.Id);
         builder.Property(ce => ce.Id).HasMaxLength(500);
+        
+        builder.ToTable("customer_engagement");
     }
 }
