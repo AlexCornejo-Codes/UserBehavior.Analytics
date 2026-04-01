@@ -15,4 +15,18 @@ internal static class CustomerEngagementMappings
             FavoriteGenre = customerEngagement.FavoriteGenre,
         };
     }
+    
+    public static Entities.CustomerEngagement ToEntity(this CreateCustomerEngagement dto)
+    {
+        return new Entities.CustomerEngagement
+        {
+            Id = $"ce_{Guid.CreateVersion7()}",
+            CustomerId = dto.CustomerId,
+            AvgWatchTimeMinutes = dto.AvgWatchTimeMinutes,
+            WatchSessionsPerWeek = dto.WatchSessionsPerWeek,
+            CompletionRate = dto.CompletionRate,
+            BingeWatchSessions = dto.BingeWatchSessions,
+            FavoriteGenre = dto.FavoriteGenre
+        };
+    }
 }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserBehavior.Analytics.Api.Database;
 using UserBehavior.Analytics.Api.DTOs.CustomerEngagement;
+using UserBehavior.Analytics.Api.Entities;
 
 namespace UserBehavior.Analytics.Api.Controllers;
 
@@ -40,5 +41,18 @@ public sealed class CustomerEngagementController(ApplicationDbContext dbContext)
         }
 
         return Ok(engagement);
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult<CustomerEngagementDto>> CreateCustomerEngagement(CreateCustomerEngagement createCustomerEngagementDto)
+    {
+        CustomerEngagement customerEngagement = createCustomerEngagementDto.ToEntity();
+
+        dbContext.Add(customerEngagement);
+        await dbContext.SaveChangesAsync();
+
+        CustomerEngagementDto customerEngagementDto = customerEngagement.ToDto();
+        
+        return CreatedAtAction(nameof(GetCustomerEngagement), new { id = customerEngagementDto.Id }, customerEngagementDto);
     }
 }
