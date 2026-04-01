@@ -73,4 +73,22 @@ public sealed class CustomerEngagementController(ApplicationDbContext dbContext)
         
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteCustomerEngagement(string id)
+    {
+        CustomerEngagement? customerEngagement = await dbContext
+            .CustomerEngagement
+            .FirstOrDefaultAsync(ce => ce.Id == id);
+
+        if (customerEngagement is null)
+        {
+            return NotFound();
+        }
+
+        dbContext.Remove(customerEngagement);
+        await dbContext.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }
