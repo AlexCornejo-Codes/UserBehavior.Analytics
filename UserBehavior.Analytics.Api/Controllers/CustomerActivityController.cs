@@ -73,4 +73,22 @@ public class CustomerActivityController(ApplicationDbContext dbContext) : Contro
         
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteCustomerActivity(string id)
+    {
+        CustomerActivity? customerActivity = await dbContext
+            .CustomerActivity
+            .FirstOrDefaultAsync(ca => ca.Id == id);
+        
+        if (customerActivity is null)
+        {
+            return NotFound();
+        }
+        
+        dbContext.Remove(customerActivity);
+        await dbContext.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }
