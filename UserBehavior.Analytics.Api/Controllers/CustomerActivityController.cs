@@ -55,4 +55,22 @@ public class CustomerActivityController(ApplicationDbContext dbContext) : Contro
         
         return CreatedAtAction(nameof(GetCustomerActivity), new { id = customerActivityDto.Id }, customerActivityDto);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateCustomerActivity(string id, UpdateCustomerActivityDto updateCustomerActivityDto)
+    {
+        CustomerActivity? customerActivity = await dbContext
+            .CustomerActivity
+            .FirstOrDefaultAsync(ca => ca.Id == id);
+
+        if (customerActivity is null)
+        {
+            return NotFound();
+        }
+        
+        customerActivity.UpdateFromDto(updateCustomerActivityDto);
+        await dbContext.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }

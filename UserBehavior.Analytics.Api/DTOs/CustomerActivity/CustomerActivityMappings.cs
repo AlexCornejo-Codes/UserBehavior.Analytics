@@ -25,4 +25,11 @@ internal static class CustomerActivityMappings
             RecommendationClickRate = dto.RecommendationClickRate
         };
     }
+    
+    public static void UpdateFromDto(this Entities.CustomerActivity customerActivity, UpdateCustomerActivityDto dto)
+    {
+        customerActivity.LastLoginDays = dto.LastLoginDays;
+        customerActivity.Interactions = dto.Interactions;
+        customerActivity.RecommendationClickRate = dto.RecommendationClickRate;
+    }
 }
