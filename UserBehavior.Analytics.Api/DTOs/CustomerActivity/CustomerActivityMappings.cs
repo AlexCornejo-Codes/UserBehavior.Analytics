@@ -13,4 +13,16 @@ internal static class CustomerActivityMappings
             RecommendationClickRate = customerActivity.RecommendationClickRate
         };
     }
+    
+    public static Entities.CustomerActivity ToEntity(this CreateCustomerActivityDto dto)
+    {
+        return new Entities.CustomerActivity
+        {
+            Id = $"ca_{Guid.CreateVersion7()}",
+            CustomerId = dto.CustomerId,
+            LastLoginDays = dto.LastLoginDays,
+            Interactions = dto.Interactions,
+            RecommendationClickRate = dto.RecommendationClickRate
+        };
+    }
 }

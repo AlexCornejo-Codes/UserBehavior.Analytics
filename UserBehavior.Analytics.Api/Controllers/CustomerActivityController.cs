@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserBehavior.Analytics.Api.Database;
 using UserBehavior.Analytics.Api.DTOs.CustomerActivity;
+using UserBehavior.Analytics.Api.Entities;
 
 namespace UserBehavior.Analytics.Api.Controllers;
 
@@ -26,7 +27,7 @@ public class CustomerActivityController(ApplicationDbContext dbContext) : Contro
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CustomerActivityDto>> GetCustomerActivityById(string id)
+    public async Task<ActionResult<CustomerActivityDto>> GetCustomerActivity(string id)
     {
         CustomerActivityDto? customerActivity = await dbContext
             .CustomerActivity
@@ -40,5 +41,18 @@ public class CustomerActivityController(ApplicationDbContext dbContext) : Contro
         }
         
         return Ok(customerActivity);
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult<CustomerActivityDto>> CreateCustomerActivity(CreateCustomerActivityDto dto)
+    {
+        CustomerActivity customerActivity = dto.ToEntity();
+        
+        dbContext.Add(customerActivity);
+        await dbContext.SaveChangesAsync();
+        
+        CustomerActivityDto customerActivityDto = customerActivity.ToDto();
+        
+        return CreatedAtAction(nameof(GetCustomerActivity), new { id = customerActivityDto.Id }, customerActivityDto);
     }
 }
