@@ -11,4 +11,14 @@ internal static class CustomerChurnMappings
             Churned = customerChurn.Churned
         };
     }
+    
+    public static Entities.CustomerChurn ToEntity(this CreateCustomerChurnDto dto)
+    {
+        return new Entities.CustomerChurn
+        {
+            Id = $"cc_{Guid.CreateVersion7()}",
+            CustomerId = dto.CustomerId,
+            Churned = dto.Churned
+        };
+    }
 }

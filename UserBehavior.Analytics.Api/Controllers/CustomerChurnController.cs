@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserBehavior.Analytics.Api.Database;
 using UserBehavior.Analytics.Api.DTOs.CustomerChurn;
+using UserBehavior.Analytics.Api.Entities;
 
 namespace UserBehavior.Analytics.Api.Controllers;
 
@@ -40,5 +41,18 @@ public sealed class CustomerChurnController(ApplicationDbContext dbContext) : Co
         }
         
         return Ok(churn);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<CustomerChurnDto>> CreateCustomerChurn(CreateCustomerChurnDto createCustomerChurnDto)
+    {
+        CustomerChurn customerChurn = createCustomerChurnDto.ToEntity();
+        
+        dbContext.Add(customerChurn);
+        await dbContext.SaveChangesAsync();
+        
+        CustomerChurnDto customerChurnDto = customerChurn.ToDto();
+        
+        return CreatedAtAction(nameof(GetCustomerChurn), new { id = customerChurnDto.Id }, customerChurnDto);   
     }
 }
