@@ -9,6 +9,7 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<Subscription> Subscriptions { get; set; }
     public DbSet<CustomerEngagement> CustomerEngagement { get; set; }
     public DbSet<CustomerActivity> CustomerActivity { get; set; }
+    public DbSet<CustomerChurn> CustomerChurn { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
