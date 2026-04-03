@@ -73,4 +73,22 @@ public sealed class CustomerChurnController(ApplicationDbContext dbContext) : Co
         
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteCustomerChurn(string id)
+    {
+        CustomerChurn? churn = await dbContext
+            .CustomerChurn
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (churn is null)
+        {
+            return NotFound();
+        }
+        
+        dbContext.Remove(churn);
+        await dbContext.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }
