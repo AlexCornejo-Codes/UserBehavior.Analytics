@@ -21,4 +21,9 @@ internal static class CustomerChurnMappings
             Churned = dto.Churned
         };
     }
+
+    public static void UpdateFromDto(this Entities.CustomerChurn customerChurn, UpdateCustomerChurnDto dto)
+    {
+        customerChurn.Churned = dto.Churned;
+    }
 }

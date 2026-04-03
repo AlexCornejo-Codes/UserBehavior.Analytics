@@ -55,4 +55,22 @@ public sealed class CustomerChurnController(ApplicationDbContext dbContext) : Co
         
         return CreatedAtAction(nameof(GetCustomerChurn), new { id = customerChurnDto.Id }, customerChurnDto);   
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateCustomerChurn(string id, UpdateCustomerChurnDto updateCustomerChurnDto)
+    {
+        CustomerChurn? churn = await dbContext
+            .CustomerChurn
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (churn is null)
+        {
+            return NotFound();
+        }
+        
+        churn.UpdateFromDto(updateCustomerChurnDto);
+        await dbContext.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }
